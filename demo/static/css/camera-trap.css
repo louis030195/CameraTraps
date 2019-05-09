@@ -19,9 +19,9 @@ li.nav-item.active{
 }
 .bg-img{
     background-image:url('/CameraTrapAssets/img/landing-img.png');
-    background-repeat:no-repeat;
+    background-repeat:no-repeat !important;
     background-size: cover;
-    margin-top:-4%;
+    margin-top:-2.9%;
 }
 .try-it
 {
@@ -674,31 +674,16 @@ div ::-webkit-scrollbar-thumb {
     	white-space: nowrap;
     	max-width: 150px;
 }
-.file-name-heading
-{
-    min-width: 190px;
-}
 .td-align td{
 	max-width: 126px;
 	min-width: 100px;
-}
-.image-name
-{
-	min-width: 210px !important;
 }
 @media (min-width:1024px){
 	.navbar{
 	padding:0px;
 	}
-.bg-img{
-margin-top:-4%;
 }
-}
-
 @media (max-width:1024px){
-	.bg-img{
-margin-top:-10%;
-}
 .ai4e_title_show {
     display: none !important;
 }
@@ -709,12 +694,17 @@ margin-top:-10%;
 	display:block;
 }
 }
+@media (min-width:1024px) (max-width:1290px){
+	.bg-img{
+		margin-top:-4%;
+	}
+} 
 @media (max-width:1024px){
 	.bg-img{
 		background-image:url('/CameraTrapAssets/img/mobile_cheetah.png');
 		background-repeat:no-repeat;
-		background-size: contain;
-		margin-top:-12%;
+		background-size: cover;
+		margin-top:-3%;
 		background-position:bottom;
 	}
 	.navbar a{

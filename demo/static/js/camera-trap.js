@@ -19,10 +19,7 @@ $('#reload').bind('click', function () {
     carousel.reload(newOptions);
     return false;
 });
-function ShowMessageNumFilesExceeded()
-{
-    maxFilesExceededError.show();
-}
+
 // Noty.overrideDefaults({
 //     layout   : 'topRight',
 //     theme    : 'mint',
@@ -100,13 +97,7 @@ $('img[rel=popover]').popover({
     //var bLazy = new Blazy({
     //    container: '.scroll-class'
     //});
-    
-    maxFilesExceededError = new Noty({ 
-        type:'error', 
-        text: 'Sorry only 8 files allowed. Extra files have been removed',
-        //timeout: 2500
-    });
-    
+
     if(localStorage.getItem("error"))
     {
         new Noty({ 

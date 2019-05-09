@@ -60,20 +60,17 @@
             {{ dropzone.config(custom_init='dz = this; 
                 dz.on("error", function(file, message){
                   console.log(file)
-                  <!--localStorage.setItem("error", message )-->
+                  localStorage.setItem("error", message )
                   
                    console.log(dz)
-                 
-                }),
-                dz.on("maxfilesexceeded", function(file){
-                  ShowMessageNumFilesExceeded()
-                 
-                  dz.removeFile(file)
-                }),
+                   <!-- throw new Error("Something went badly wrong!"); -->
+                   <!-- alert("error") -->
+
+                })
                 dz.on("addedfiles", function(){ 
                     $(".loading").css("visibility", "visible");
                     $("#overlay").show();  
-                })', max_files=8) }}
+                })', max_files=10) }}
 
             {% assets "js_all" %}
   		        <script type="text/javascript" src="{{ ASSET_URL }}"></script>

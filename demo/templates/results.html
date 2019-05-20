@@ -12,55 +12,106 @@
 {% endblock %}
 
 {% block body %}
+
+<style>
+    span {font-family:biryani;font-weight: 500}
+    .species-name {margin-bottom: 8px;}
+	.progress-bar{height:10px;}
+	.progress-container {margin-top:5px; margin-bottom:5px; background-color:#F7F6F4; padding-right:10px}
+	.percentage {float:right; margin-left:5px; margin-top:-5px;}
+	</style>
+
 <div class="container-fluid px-0">
-        <div class="d-flex mt-5 justify-content-between no-d-flex">
+        <div class="d-flex mt-3 justify-content-between no-d-flex">
             <div class="col-sm-12 col-lg-7 col-md-12 col-12">
                 <div class="">
-                    <h1 class="font-size-36 font-biryani font-weight-bold letter-spacing-3 font-weight-800 custm-gery-1 text-center">RESULTS</h1>
+                    <h1 class="mt-2 font-size-36 font-biryani font-weight-bold letter-spacing-3 font-weight-800 custm-gery-1 text-center">RESULTS</h1>
                 </div>
                 <div class="carousel_wrap px-4 no-spacing">		                            
                     <div id="carousel">
-			 <div class="results-loading" style="visibility:visible"></div>
-			 {% for result in result_det %}
-                            <img src="{{ result.path }}" rel="popover" data-img="{{result.path }}"  id="carousel-{{ result.image_name.replace('.JPG', '') }}"  
-                              class="mw-100 carousel-image" />
-                         {% endfor %}  
+			            <div class="results-loading" style="visibility:visible"></div>
+			                {% for result in result_det %}
+                                <img src="{{ result.path }}" rel="popover" data-img="{{result.path}}"  id="carousel-{{ result.image_name.replace('.JPG', '') }}"  
+                                    class="mw-100 carousel-image" />
+                            {% endfor %}  
+                        </div>
+                        <a id="prev" class="nav_button prev_button link pull-left" title="prev">&lt;</a>
+                        <a id="next" class="nav_button next_button link pull-right" title="next">&gt;</a>
                     </div>
-                    <a id="prev" class="nav_button prev_button link pull-left" title="prev">&lt;</a>
-                    <a id="next" class="nav_button next_button link pull-right" title="next">&gt;</a>
-                </div>
-                <div class="detect-animal text-center mt-4 d-flex flex-column mb-sm-5">
-                    <!-- <div class="letter-spacing-1 font-size18 font-weight-bold text-light-green">ANIMAL DETECTED</div> -->
-                    <button type="button" onclick="reset_upload()" class="btn border-radius-30 bg-transparent reset-btn-border font-size10 reset-btn-border px-4 height-38 text-block mt-4 w-25 ml-auto mr-auto"><img src="/CameraTrapAssets/img/reset.svg" alt="reload" class="pr-2" />RESET</button>
-                    <!--button type="button" value='{{ output_json|tojson|safe}}' id="export_result" class="btn border-radius-30 bg-transparent reset-btn-border font-size10 reset-btn-border px-4 height-38 text-block mt-4 w-25  ml-auto mr-auto"><img src="/CameraTrapAssets/img/reset.svg" alt="reload" class="pr-2" />EXPORT RESULTS</button--->
+                    <div class="detect-animal text-left mt-4 d-flex flex-column mb-sm-5 custm-gery-2 font-size14 letter-spacing-2" >
+                        <!-- <div class="letter-spacing-1 font-size18 font-weight-bold text-light-green">ANIMAL DETECTED</div> -->
+                        <button style="display: none" type="button" onclick="reset_upload()" class="btn border-radius-30 bg-transparent reset-btn-border font-size10 reset-btn-border px-4 height-38 text-block mt-4 w-25 ml-auto mr-auto"><img src="/CameraTrapAssets/img/reset.svg" alt="reload" class="pr-2" />RESET</button>
+                        <div style="width:60%; margin:0 auto">
+                        <h5 class="clasif-color my-3 text-center font-weight-bold">CLASSIFICATION RESULTS</h5> 
+                        <div id="carouselContent" class="carousel" data-ride="carousel">
+                                <div class="carousel-inner" role="listbox">
+                                    {% for results in classification %}
+                                        <div class="carousel-item item-{{loop.index}} text-center p-4">
+                                                <div class="accordion" id="accordionResults">
+                                                        {% for predictions in results %}
+                                                            <div class="card">
+                                                                <div class="card-header" id="headingOne">
+                                                                    <h2 class="mb-0">
+                                                                        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapse{{loop.index}}">Crop {{loop.index}}</button>									
+                                                                    </h2>
+                                                                </div>
+                                                                <div id="collapse{{loop.index}}" class="collapse show" aria-labelledby="heading{{loop.index}}" data-parent="#accordionResults">
+                                                                    <div class="card-body">
+                                                                            {% for result in predictions %}
+                                                                                <span class="species-name font-size12">{{result.category}}</span>
+                                                                                <div class="progress-container mb-3">
+                                                                                    <span class="percentage">{{result.score}}</span>
+                                                                                    <div class="progress-bar border-radius-30 process-btn" style="width:{{result.score}}%;"></div>
+                                                                                </div>
+                                                                            {% endfor %}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        {% endfor %}
+                                                </div>
+                                        </div>    
+                                    {% endfor %}
+                                </div>
+                         
+                        </div>
+                        <div class="carousel_wrap px-4 no-spacing">	
+                                <div id="carousel-classification">
+                                       
+                                        
+                                </div>
+                               
+                        </div>
+                          
+                    </div>
                 </div>
             </div>
             <div class="col-sm-12 col-lg-5 col-md-12 px-0 col-12">
-                <div class="image-details-bg position-absolute w-100 px-4 py-5 top-27">
+                <div class="image-details-bg position-absolute w-100 px-4 py-5 top-27" style="display: none">
                     <div class="font-size18 custm-grey-5 letter-spacing-1">IMAGE DETAILS</div>
                 </div>
-                <div class="table-bg p-4">
+                <div class="table-bg position-absolute w-100">
                     <div class="table-responsive">
                         <table class="table responsive-table td-align">
-                            <thead class="float-right w-100">
+                            <caption class="table-caption font-size18 custm-grey-5 letter-spacing-1">IMAGE DETAILS</caption>
+                            <thead class="float-right w-100 px-4">
                                 <tr class="border-bottom border-white">
-                                    <th scope="col" class="custm-gery-2 font-size12 letter-spacing-1 border-0 font-weight-normal">FILE NAME</th>
-                                    <th scope="col" class="custm-gery-2 font-size12 letter-spacing-1 border-0 font-weight-normal">RESULTS</th>
-                                    <th scope="col" class="custm-gery-2 font-size12 letter-spacing-1 border-0 font-weight-normal">BOUNDING BOXES</th>
-                                    <th scope="col" class="custm-gery-2 font-size12 letter-spacing-1 border-0 font-weight-normal">PATH</th>
+                                    <th scope="col" class="custm-gery-2 font-size12 letter-spacing-1 border-0 font-weight-normal file-name-cell">FILE NAME</th>
+                                    <th scope="col" class="custm-gery-2 font-size12 letter-spacing-1 border-0 font-weight-normal results-cell">RESULTS</th>
+                                    <th scope="col" class="custm-gery-2 font-size12 letter-spacing-1 border-0 font-weight-normal bounding-boxes-cell">BOUNDING BOXES</th>
+                                    <th scope="col" class="custm-gery-2 font-size12 letter-spacing-1 border-0 font-weight-normal path-cell">PATH</th>
                                 </tr>
                             </thead>
-                            <tbody class="table-scroll">
+                            <tbody class="table-scroll px-4">
                                 {% for result in result_det %}
                                     <tr id="table-{{ result.image_name.replace('.JPG', '') }}" class="border-bottom border-white table-details">
-                                        <td class="custm-gery-2 font-size14 border-0 text-width">{{ result.image_name }}</td>
+                                        <td class="custm-gery-2 font-size14 border-0 text-width file-name-cell">{{ result.image_name }}</td>
                                         {% if result.num_objects > 0 %}
-                                            <td class="border-0"><img src="/CameraTrapAssets/img/success-mark.svg" alt="success" /></td>
+                                            <td class="border-0 results-cell"><img src="/CameraTrapAssets/img/success-mark.svg" alt="success" /></td>
                                         {% else %}
-                                            <td class="border-0"><img src="/CameraTrapAssets/img/cancel.svg" alt="success" /></td>
+                                            <td class="border-0  results-cell"><img src="/CameraTrapAssets/img/cancel.svg" alt="success" /></td>
                                         {% endif %}
-                                        <td class="custm-gery-2 font-size14 border-0">{{ result.num_objects }}</td>
-                                        <td class="custm-gery-2 font-size14 border-0"><span class="text-elipse d-block">{{result.org_path}}</span></td>
+                                        <td class="custm-gery-2 font-size14 border-0 bounding-boxes-cell">{{ result.num_objects }}</td>
+                                        <td class="custm-gery-2 font-size14 border-0 path-cell"><span class="text-elipse d-block">{{result.org_path}}</span></td>
                                     </tr>
                                 {% endfor %}
                             </tbody>

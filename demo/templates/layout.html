@@ -9,11 +9,11 @@
         {% assets "css_all" %}
 		    <link rel="stylesheet" href="{{ ASSET_URL }}"> 
         {% endassets %}
-
+	<link href="https://fonts.googleapis.com/css?family=Biryani:200,400,600,700,800" rel="stylesheet">
         {{ dropzone.load_css() }}
         {{ dropzone.style('border: 2px dashed #C5BBB8; border-radius: 8px; 
-                          background-color:rgba(202,193,193,0.1); width: 75%;
-                          min-height: 400px; margin-left: 5%; text-align:center;') }}
+                          background-color:rgba(202,193,193,0.1); 
+                          min-height: 400px; text-align:center;') }}
         
     </head>
     <body class="{% block body_class %}{% endblock %} vh-100">
@@ -55,25 +55,53 @@
            <div id="overlay">
             <div class="loading" style="visibility: hidden"></div>
           </div>
-            {% block body -%}{%- endblock %}
-            {{ dropzone.load_js() }}
-            {{ dropzone.config(custom_init='dz = this; 
-                dz.on("error", function(file, message){
-                  console.log(file)
-                  localStorage.setItem("error", message )
-                  
-                   console.log(dz)
-                   <!-- throw new Error("Something went badly wrong!"); -->
-                   <!-- alert("error") -->
+          {% block body -%}{%- endblock %}
+          {{ dropzone.load_js() }}
+          {{ dropzone.config(custom_init='dz = this; 
 
-                })
-                dz.on("addedfiles", function(){ 
-                    $(".loading").css("visibility", "visible");
-                    $("#overlay").show();  
-                })', max_files=10) }}
+              dz.on("error", function(file, message){
+                FileUploadErrors(message)
+              }),
+
+         
+
+              dz.on("maxfilesexceeded", function(file){
+                  dz.removeFile(file)
+              }),
+
+              dz.on("sending", function(file, xhr, formData) {
+                // Will send the filesize along with the file as POST data.
+                
+
+              }),
+             
+             
+              dz.on("addedfiles", function(fileList){ 
+                  $(".loading").css("visibility", "visible")
+                  $("#overlay").show()
+                  <!-- dz.files -->
+                  UploadingFilesMessage()
+                  var classifier = $("#dropdownClassiferButton").text().trim()
+                  if(classifier == "Snapshot Serengeti"){
+                    classifier = "ss"
+                  }
+                  else if(classifier == "Caltech Camera Traps"){
+                    classifier = "caltech"
+                  }
+
+                  else if(classifier == "NACTI"){
+                    classifier = "nacti"
+                  }
+
+                  for(i=0; i<fileList.length; i++){
+                    fileList[i].upload.filename =  classifier + "_" +fileList[i].upload.filename
+                  }                   
+              })', max_files=10, timeout = 180000000) }}
+    
 
             {% assets "js_all" %}
   		        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
             {% endassets %}
+         
     </body>
 </html>

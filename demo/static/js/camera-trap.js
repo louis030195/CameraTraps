@@ -1,3 +1,7 @@
+var carouselclassification = $("#carouselContent").carousel({
+    interval: false
+});
+
 var carousel = $("#carousel").waterwheelCarousel({
     flankingItems: 2,
     sizeMultiplier:0.9,
@@ -6,17 +10,28 @@ var carousel = $("#carousel").waterwheelCarousel({
     separation: 120, // distance between items in carousel
     
 });
+
+
+
 $('#prev').bind('click', function () {
     carousel.prev();
+    $("#carouselContent").carousel('prev');
     return false
 });
 $('#next').bind('click', function () {
     carousel.next();
+    $("#carouselContent").carousel('next');
     return false;
 });
+
+
+
+$('#collapse1').addClass('show')
+$('.item-1').addClass('active')
 $('#reload').bind('click', function () {
     newOptions = eval("(" + $('#newoptions').val() + ")");
     carousel.reload(newOptions);
+    carouselclassification.reload(newOptions)
     return false;
 });
 
@@ -68,8 +83,20 @@ function reset_upload(){
 function onSubmit(){
     $(".loading").css("visibility", "visible")
     $("#overlay").show();
+    var classifier = $("#dropdownClassiferButton").text().trim()
+    if(classifier == "Snapshot Serengeti"){
+        classifier = "ss"
+    }
+    else if(classifier == "Caltech Camera Traps"){
+        classifier = "caltech"
+    }
+
+    else if(classifier == "NACTI"){
+        classifier = "nacti"
+    }
+    console.log(classifier)
     $.ajax({
-        'url': '/processurlimage?image_url=' + $('#upload-url').val(),
+        'url': '/processurlimage?image_url=' +   $('#upload-url').val() + '_' + classifier,
         'method': 'GET'
     }).then(function(response){
         $(".loading").css("visibility", "hidden")
@@ -89,15 +116,55 @@ $('img[rel=popover]').popover({
   content: function(){return '<img src="'+$(this).data('img') + '" style="width:100%;height:100%;" />';}
 });
 
+function FileUploadErrors(error)
+{
+    //TODO: remove hard coding of the error
+    console.log(error)
+    if(error != "Your can't upload any more files.")
+    {
+        //maxFilesExceededError.setText('Sorry only 10 files allowed. Extra files have been removed')
+        //maxFilesExceededError.show();
+        new Noty({ 
+            type: 'error', 
+            text: error,
+            //timeout: 25000
+        }).show();
+    }  
+    else{
+        maxFilesExceededError.show();
+    }      
+          
+}
+function UploadingFilesMessage()
+{
+    alert('files are being uploaded')
+}
 
+$(".classifier-dropdown a").click(function(e){
+    e.preventDefault(); // cancel the link behaviour
+    var selText = $(this).text();
+    $("#dropdownClassiferButton").text(selText);
+});
 
+// function maxFilesExceeded()
+// {
+//     if(maxFilesExceededError.length)
+//     {
+//       maxFilesExceededError.show();
+//     }
+// }        
 
 (function() {
     // Initialize
     //var bLazy = new Blazy({
     //    container: '.scroll-class'
-    //});
 
+    maxFilesExceededError = new Noty({ 
+        type:'error', 
+        text: 'Sorry only 10 files allowed. Extra files have been removed',
+        //timeout: 2500
+    });
+   
     if(localStorage.getItem("error"))
     {
         new Noty({ 
@@ -116,3 +183,4 @@ $('img[rel=popover]').popover({
     })
 
 })();  
+

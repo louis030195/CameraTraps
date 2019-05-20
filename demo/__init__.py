@@ -17,10 +17,14 @@ dropzone = Dropzone(app)
 
 app.config['SECRET_KEY'] = 'supersecretkeygoeshere'
 
-#api url
-app.config['API_URL'] = 'http://<api_url>/v1/camera_trap_api/detect'
-app.config['API_RESULTS_URL'] = 'http://<api_url>/static/results/'
+#detection api url
+api_base_url = '<enter base url here>'
+app.config['DETECTION_API_URL'] = api_base_url + 'detect'
+app.config['DETECTION_API_RESULTS_URL'] = api_base_url + '/static/results/'
 
+#classification api url
+classify_base_url = '<enter classification base url here>'
+app.config['CLASSIFICATION_API_URL'] = classify_base_url + 'classify'
 
 # Dropzone settings
 app.config['DROPZONE_UPLOAD_MULTIPLE'] = True
@@ -40,11 +44,6 @@ app.config["REDIRECT_URI"] = ''
 app.jinja_env.auto_reload = True
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
-# app.config['DROPZONE_IN_FORM'] = True
-# app.config['DROPZONE_UPLOAD_ON_CLICK'] = True 
-# app.config['DROPZONE_UPLOAD_BTN_ID'] =  'submit'
-# app.config[' DROPZONE_UPLOAD_ACTION'] = 'processimages'
-
 
 # Uploads settings
 app.config['UPLOADED_PHOTOS_DEST'] = os.path.join(os.getcwd() , 'static', 'uploads')
@@ -60,6 +59,7 @@ patch_request_class(app)  # set maximum file size, default is 16MB
 #model configuration
 app.config['MODEL_FILE'] = 'checkpoint/frozen_inference_graph.pb'
 app.config['OUTPUT_FOLDER'] = 'static/results/'
+
 
 
 from . import assets

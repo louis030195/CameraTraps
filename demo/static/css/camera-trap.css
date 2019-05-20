@@ -2,7 +2,7 @@
     font-family: 'Biryani', sans-serif;
 }
 body{
-    font-family: 'Biryani', sans-serif; 
+    font-family: 'Biryani', sans-serif !important; 
 }
 .vh-100{
     height:100vh;
@@ -87,6 +87,12 @@ li.nav-item.active{
 }
 .color-black{
     color:#000;
+}
+.clasif-color{
+color:#04B491;
+}
+.custm-width-1{
+	width:500px;
 }
 .process-btn{
     background-color: #04B491;
@@ -249,6 +255,7 @@ div ::-webkit-scrollbar-thumb {
 /*gallery details page css*/
 .table-bg{
     background:#F7F6F4;
+    top: -10%;
 }
 .text-elipse{
     width:100px;
@@ -266,16 +273,26 @@ div ::-webkit-scrollbar-thumb {
 }
 #carousel {
 	margin:0px auto;
-	margin-top:50px;
+	margin-top:30px;
 	height:300px;
 	position:relative;
 	clear:both;
 	overflow:hidden;
 }
+
+#carousel-classification {
+    margin: 0 auto;
+    margin-top: 30px;
+    height: 300px;
+    position: relative;
+    clear: both;
+    overflow: hidden;
+}
+
 .carousel_wrap .nav_button { 
 	position:absolute;
 	left:0px;
-	top:40%;
+	top:30%;
 	font-size:40px;
 	font-weight:300;
 	color:#979797 !important;
@@ -291,6 +308,20 @@ div ::-webkit-scrollbar-thumb {
 	left:auto;
 	right:50px;
 }
+ .custm-dd-toggle::after {
+    border-top: .5em solid !important;
+    border-right: .5em solid transparent !important;
+    border-left: .5em solid transparent !important;
+    vertical-align:2px !important;
+}
+
+.carousel-item.active,
+.carousel-item-next,
+.carousel-item-prev{
+    display:block;
+}
+
+
 
 /*overlay css*/
 
@@ -355,8 +386,8 @@ div ::-webkit-scrollbar-thumb {
 	top:-8%;
 }
 .table-scroll{
-    	height:450px;
-    	overflow:auto;
+    max-height: 600px;
+    overflow:auto;
 	display:block;
 	width:100% !important;
 }
@@ -700,6 +731,9 @@ div ::-webkit-scrollbar-thumb {
 	}
 } 
 @media (max-width:1024px){
+	.text-md-center{
+	text-align:center;
+}
 	.bg-img{
 		background-image:url('/CameraTrapAssets/img/mobile_cheetah.png');
 		background-repeat:no-repeat;
@@ -951,4 +985,34 @@ text-align:center;
 {
   display:none;
 }
+}
+.table-caption
+{
+    caption-side: top !important;
+    background-color: #EDEAE1;
+    padding-top: 50px;
+    padding-bottom: 40px;
+    padding-left:20px;
+}
+.bounding-boxes-cell
+{
+    text-align:center;
+    max-width: 155px !important;
+    min-width:155px !important;
+}
+.file-name-cell
+{
+    min-width:220px !important;
+    max-width: 220px !important;
+}
+.results-cell
+{
+  text-align:center;
+  min-width:100px !important;
+  max-width: 100px !important;
+}
+.path-cell
+{
+  min-width:100px !important;
+  max-width: 100px !important; 
 }
